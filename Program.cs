@@ -1,0 +1,68 @@
+﻿using System;
+using System.Diagnostics;
+using System.Threading;
+using NFTestTreading.Models;
+using nanoFramework.Json;
+using nanoFramework.SignalR.Client.json;
+using System.Text;
+
+namespace NFTestTreading
+{
+    public class Program
+    {
+        const string TestDataRaw = @"/XMX5LGF0000453094270
+
+1-3:0.2.8(50)
+0-0:1.0.0(210304120347W)
+0-0:96.1.1(4530303531303035333039343237303139)
+1-0:1.8.1(001819.387*kWh)
+1-0:1.8.2(002093.302*kWh)
+1-0:2.8.1(000088.650*kWh)
+1-0:2.8.2(000157.206*kWh)
+0-0:96.14.0(0002)
+1-0:1.7.0(00.288*kW)
+1-0:2.7.0(00.000*kW)
+0-0:96.7.21(00015)
+0-0:96.7.9(00002)
+1-0:99.97.0(1)(0-0:96.7.19)(190226161118W)(0000000541*s)
+1-0:32.32.0(00019)
+1-0:32.36.0(00002)
+0-0:96.13.0()
+1-0:32.7.0(231.0*V)
+1-0:31.7.0(001*A)
+1-0:21.7.0(00.288*kW)
+1-0:22.7.0(00.000*kW)
+0-1:24.1.0(003)
+0-1:96.1.0(4730303339303031393231393034393139)
+0-1:24.2.1(210304120005W)(01980.598*m3)
+!894F  ";
+
+        static int count = 0;
+        static int counter = 0;
+        public static void Main()
+        {
+            Debug.WriteLine("Hello from nanoFramework!");
+            Debug.WriteLine(System.Environment.TickCount64.ToString());
+            Timer timer = new Timer(EatCpu, count, 0, 1000);
+            
+            Thread.Sleep(Timeout.Infinite);
+        }
+
+        private static void EatCpu(object state)
+        {
+            byte[] serialdata = Encoding.UTF8.GetBytes(TestDataRaw);
+            var model = P1MessageDecoder.DecodeData(serialdata);
+            int round = count;
+            count++;
+            
+            long startTime = System.Environment.TickCount64;
+            var json1 =JsonConvert.SerializeObject(model);
+            Debug.WriteLine(json1);
+            Debug.WriteLine($"{round} new Json implementation = {System.Environment.TickCount64 - startTime}");
+            startTime = System.Environment.TickCount64;
+            var json2 = JsonSerializer.SerializeObject(model);
+            Debug.WriteLine(json2);
+            Debug.WriteLine($"{round} old Json implementation = {System.Environment.TickCount64 - startTime}");
+        }
+    }
+}
