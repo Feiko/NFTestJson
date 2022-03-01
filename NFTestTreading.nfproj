@@ -18,15 +18,10 @@
   </PropertyGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.props" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.props')" />
   <ItemGroup>
-    <Compile Include="Json\DateTimeExtensions.cs" />
-    <Compile Include="Json\JsonParser.cs" />
-    <Compile Include="Json\JsonReflectionDecode.cs" />
-    <Compile Include="Json\JsonSerializer.cs" />
-    <Compile Include="Json\NumberExtensions.cs" />
-    <Compile Include="Json\StringExtensions.cs" />
     <Compile Include="Models\ConnectedMeterModel.cs" />
     <Compile Include="Models\COSEMObjectModel.cs" />
     <Compile Include="Models\EnergyReadoutModel.cs" />
+    <Compile Include="Models\InvocationMessage.cs" />
     <Compile Include="Models\PowerOutageModel.cs" />
     <Compile Include="nanoFramework.Json\DeserializationException.cs" />
     <Compile Include="nanoFramework.Json\JsonArray.cs" />
@@ -66,6 +61,9 @@
     <None Include="nanoFramework.Json\nanoFramework.Json.nfproj" />
     <None Include="nanoFramework.Json\packages.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\nanoFramework.Json\nanoFramework.Json\nanoFramework.Json.nfproj" />
   </ItemGroup>
   <Import Project="$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets" Condition="Exists('$(NanoFrameworkProjectSystemPath)NFProjectSystem.CSharp.targets')" />
   <ProjectExtensions>

@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.Threading;
 using NFTestTreading.Models;
 using nanoFramework.Json;
-using nanoFramework.SignalR.Client.json;
 using System.Text;
+using nanoFramework.json;
 
 namespace NFTestTreading
 {
@@ -37,6 +37,32 @@ namespace NFTestTreading
 0-1:24.2.1(210304120005W)(01980.598*m3)
 !894F  ";
 
+        private static string testInvocationReceiveMessage = @"{
+        ""type"":1,
+        ""target"":""ReceiveAdvancedMessage"",
+        ""arguments"": [
+            {
+                ""age"":22,
+                ""name"":""Monica"",
+                ""gender"":1,
+                ""car"":{
+                    ""age"":5,
+                    ""model"":""Tesla""
+                }
+            },
+            {
+                ""age"":88,
+                ""name"":""Grandpa"",
+                ""gender"":0,
+                ""car"":{
+                    ""age"":35,
+                    ""model"":""Buick""
+                }
+            },
+            3
+        ]}";
+
+
         static int count = 0;
         static int counter = 0;
         public static void Main()
@@ -50,19 +76,60 @@ namespace NFTestTreading
 
         private static void EatCpu(object state)
         {
-            byte[] serialdata = Encoding.UTF8.GetBytes(TestDataRaw);
-            var model = P1MessageDecoder.DecodeData(serialdata);
+            //test 5
+            //var dserResult = (InvocationReceiveMessage)JsonConvert.DeserializeObject(@"{""type"":1,""target"":""ReceiveMessage"",""arguments"":[""I_am_a_string"",""I_am_another_string""]}", typeof(InvocationReceiveMessage));
+            //string arg0 = (string)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dserResult.arguments[0]), typeof(string));
+            //string arg1 = (string)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dserResult.arguments[1]), typeof(string));
+            //Debug.WriteLine(arg0);
+            //Debug.WriteLine(arg1);
             int round = count;
             count++;
-            
             long startTime = System.Environment.TickCount64;
+            Debug.WriteLine(startTime.ToString());
+            //var dserResult = (InvocationReceiveMessage)JsonConvert.DeserializeObject(testInvocationReceiveMessage, typeof(InvocationReceiveMessage));
+            //Debug.WriteLine($"{round} new Json implementation = {System.Environment.TickCount64 - startTime}");
+            //Debug.WriteLine((dserResult.type == 1).ToString());
+            //Debug.WriteLine(((int)dserResult.arguments[2] == 3).ToString());
+            //int argsCount = (int)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dserResult.arguments[2]), typeof(int));
+            //Debug.WriteLine(argsCount.ToString());
+            //Person2 person1 = (Person2)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dserResult.arguments[0]), typeof(Person2));
+            //Person2 person2 = (Person2)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dserResult.arguments[1]), typeof(Person2));
+            
+            
+            byte[] serialdata = Encoding.UTF8.GetBytes(TestDataRaw);
+           
+            var model = P1MessageDecoder.DecodeData(serialdata);
+
+            
+            startTime = System.Environment.TickCount64;
             var json1 =JsonConvert.SerializeObject(model);
             Debug.WriteLine(json1);
             Debug.WriteLine($"{round} new Json implementation = {System.Environment.TickCount64 - startTime}");
             startTime = System.Environment.TickCount64;
-            var json2 = JsonSerializer.SerializeObject(model);
-            Debug.WriteLine(json2);
+            var json2 = JsonSerializer.Serialize(model);
+            
             Debug.WriteLine($"{round} old Json implementation = {System.Environment.TickCount64 - startTime}");
+            Debug.WriteLine(json2);
         }
+    }
+
+    public class Person2
+    {
+        public int age { get; set; }
+        public string name { get; set; }
+        public Gender gender { get; set; }
+        public Car car { get; set; }
+    }
+
+    public class Car
+    {
+        public int age { get; set; }
+        public string model { get; set; }
+    }
+
+    public enum Gender
+    {
+        Male,
+        Female
     }
 }
