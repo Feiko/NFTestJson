@@ -76,25 +76,11 @@ namespace NFTestTreading
 
         private static void EatCpu(object state)
         {
-            //test 5
-            //var dserResult = (InvocationReceiveMessage)JsonConvert.DeserializeObject(@"{""type"":1,""target"":""ReceiveMessage"",""arguments"":[""I_am_a_string"",""I_am_another_string""]}", typeof(InvocationReceiveMessage));
-            //string arg0 = (string)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dserResult.arguments[0]), typeof(string));
-            //string arg1 = (string)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dserResult.arguments[1]), typeof(string));
-            //Debug.WriteLine(arg0);
-            //Debug.WriteLine(arg1);
             int round = count;
             count++;
             long startTime = System.Environment.TickCount64;
             Debug.WriteLine(startTime.ToString());
-            //var dserResult = (InvocationReceiveMessage)JsonConvert.DeserializeObject(testInvocationReceiveMessage, typeof(InvocationReceiveMessage));
-            //Debug.WriteLine($"{round} new Json implementation = {System.Environment.TickCount64 - startTime}");
-            //Debug.WriteLine((dserResult.type == 1).ToString());
-            //Debug.WriteLine(((int)dserResult.arguments[2] == 3).ToString());
-            //int argsCount = (int)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dserResult.arguments[2]), typeof(int));
-            //Debug.WriteLine(argsCount.ToString());
-            //Person2 person1 = (Person2)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dserResult.arguments[0]), typeof(Person2));
-            //Person2 person2 = (Person2)JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dserResult.arguments[1]), typeof(Person2));
-            
+           
             
             byte[] serialdata = Encoding.UTF8.GetBytes(TestDataRaw);
            
